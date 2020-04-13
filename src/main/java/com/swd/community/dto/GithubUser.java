@@ -1,4 +1,4 @@
-package com.swd.community.community.dto;
+package com.swd.community.dto;
 
 /**
  * Created by myth on 2020/4/10 18:20

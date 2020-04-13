@@ -1,8 +1,8 @@
-package com.swd.community.community.controller;
+package com.swd.community.controller;
 
-import com.swd.community.community.dto.AccessTokenDTO;
-import com.swd.community.community.dto.GithubUser;
-import com.swd.community.community.provider.GithubProvider;
+import com.swd.community.dto.AccessTokenDTO;
+import com.swd.community.dto.GithubUser;
+import com.swd.community.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;

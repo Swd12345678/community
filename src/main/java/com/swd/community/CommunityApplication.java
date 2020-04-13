@@ -1,4 +1,4 @@
-package com.swd.community.community;
+package com.swd.community;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
