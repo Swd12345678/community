@@ -1,4 +1,4 @@
-create table table_name
+create table question
 (
 	id int auto_increment,
 	title varchar(50),
@@ -13,4 +13,3 @@ create table table_name
 	constraint table_name_pk
 		primary key (id)
 );
-
