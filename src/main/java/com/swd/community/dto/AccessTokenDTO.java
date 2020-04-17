@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class AccessTokenDTO {
+    //向github的authorize接口传的实体
     private String client_id;
     private String client_secret;
     private String code;

@@ -38,26 +38,38 @@ public class AuthorizeController {
     public String callback(@RequestParam(name="code")String code,
                            @RequestParam(name="state")String state,
                            HttpServletResponse response){
+        //本控制器的目的就是传输携带包括code和state的DTO对象到github端用code换token
         AccessTokenDTO accessTokenDTO=new AccessTokenDTO();
         accessTokenDTO.setClient_id(clientID);
         accessTokenDTO.setClient_secret(clientSecret);
         accessTokenDTO.setCode(code);
         accessTokenDTO.setRedirect_uri(redirectUri);
         accessTokenDTO.setState(state);
+        //携带code的AccessToken对象换token
         String accessToken=githubProvider.getAccessToken(accessTokenDTO);
+        //携带token换githubUser
         GithubUser githubUser = githubProvider.getUser(accessToken);
+        //if拿到了githubUser
+        // 需要将githubUser做持久化 即存进数据库
         if(githubUser!=null && githubUser.getId()!=null)
         {
             User user = new User();
+            //将token转换为36位随机机器码，一方面保证唯一性，另一方面保证数据格式一致
             String token = UUID.randomUUID().toString();
             user.setToken(token);
             user.setName(githubUser.getName());
+            //long->String
             user.setAccountId(String.valueOf(githubUser.getId()));
+            //获取时间
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(githubUser.getAvatar_url());
+            //所有属性都填写完毕
+            //插入数据库
             userMapper.insert(user);
+            //并生成一条cookie可以用来校验登录态
             response.addCookie(new Cookie("token",token));
+            //返回主页
             return "redirect:/";
         }
         else {

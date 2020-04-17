@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public class QuestionDTO {
+    //QuestionService用来连接user与question的实体
     private Integer id;
     private String title;
     private String description;

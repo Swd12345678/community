@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class GithubUser {
+    //从github的user接口返回的json解析成的实体
     private String name;
     private Long id;
     private String bio;

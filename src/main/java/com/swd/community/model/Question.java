@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class Question {
+    //question表
     private Integer id;
     private String title;
     private String description;

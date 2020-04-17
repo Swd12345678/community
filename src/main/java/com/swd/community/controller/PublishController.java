@@ -32,16 +32,17 @@ public class PublishController {
 
     @PostMapping("/publish")
     public String doPublish(
+            //非实体参数需要写@RequestParam注解
             @RequestParam("title") String title,
             @RequestParam("description") String description,
             @RequestParam("tag") String tag,
             HttpServletRequest request,
             Model model) {
-
+        //回显
         model.addAttribute("title",title);
         model.addAttribute("description",description);
         model.addAttribute("tag",tag);
-
+        //判空
         if(title == null || title.trim().length()== 0)
         {
             model.addAttribute("error", "标题不能为空");
@@ -57,7 +58,7 @@ public class PublishController {
             model.addAttribute("error", "标签不能为空");
             return "publish";
         }
-
+        //判登录与否
         User user = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length!=0) {
@@ -65,20 +66,22 @@ public class PublishController {
 
                 if (cookie.getName().equals("token")) {
                     String token = cookie.getValue();
+                    //库中寻找
                     user = userMapper.findByToken(token);
                     if (user != null) {
                         request.getSession().setAttribute("user", user);
                     }
                     break;
                 }
-
+                //找到了放session
             }
         }
         if (user == null) {
             model.addAttribute("error", "用户未登录");
+            //未登录就返回错误信息：未登录
             return "publish";
         }
-
+        //各种信息都添加好
         Question question = new Question();
         question.setTitle(title);
         question.setDescription(description);
@@ -87,6 +90,7 @@ public class PublishController {
         question.setCreator(user.getId());
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreate());
+        //插库
         questionMapper.create(question);
         return "redirect:/";
     }

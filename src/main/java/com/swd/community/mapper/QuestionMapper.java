@@ -14,9 +14,12 @@ import java.util.List;
 @Component
 @Mapper
 public interface QuestionMapper {
+
+    //点击发布提问信息，发布成功插入一条信息
     @Insert("insert into question (title,description,gmt_create,gmt_modified,creator,tag) values (#{title},#{description},#{gmtCreate},#{gmtModified},#{creator},#{tag})")
     public void create (Question question);
 
+    //查question表中的全部信息
     @Select("select * from question")
     List<Question> list();
 

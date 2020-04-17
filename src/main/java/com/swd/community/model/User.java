@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class User {
+    //user表
     private Integer id;
     private String name;
     private String accountId;

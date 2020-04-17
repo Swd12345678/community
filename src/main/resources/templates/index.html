@@ -2,13 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>白菜社区</title>
-        <!--
-        <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">  引入bootstrap的css样式库
-        <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js">  引入jQuery
-        -->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="stylesheet" href="css/bootstrap.min.css"/>
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <!--引入自己写的.css文件后面加上版本号这样可以每次运行时将css缓存清空防止出现修改后无效果-->
         <link rel="stylesheet" href="css/community.css?version=1.0.7"/>
         <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
         <script src="js/bootstrap.min.js" type="application/javascript"></script>
@@ -23,23 +20,27 @@
                             data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                         <span class="sr-only">白菜社区</span>
                     </button>
+                    <!--  点击标题返回主页面 将按钮的href设为根目录  -->
                     <a class="navbar-brand" href="/">白菜社区</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
+                    <!-- 搜索问题表单  -->
                     <form class="navbar-form navbar-left">
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="搜索问题">
                         </div>
                         <button type="submit" class="btn btn-default">搜索</button>
                     </form>
+                    <!-- 右上角选项  -->
                     <ul class="nav navbar-nav navbar-right">
+                        <!--  未登录，不能发布 -->
                         <li th:if="${session.user!=null}">
                             <a href="/publish">
                                 发布
                             </a>
                         </li>
                         <!--<div th:text="${session.githubUser}"></div>  单纯的在div打印-->
+                        <!--  未登录，不显示用户名及下拉列表 -->
                         <li class="dropdown" th:if="${session.user != null}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true" aria-expanded="false" th:text="${session.user.getName()}"> <span
@@ -50,7 +51,11 @@
                                 <li><a href="#">退出登录</a></li>
                             </ul>
                         </li>
+                        <!--  unless -->
                         <li th:unless="${session.user != null}">
+                            <!--  按下登录按钮访问github的authorize接口  github处理后携带一个code回调redirect_uri  -->
+                            <!-- 回调的redirect_uri :http://localhost:8887/callback (跟client_id一样是你注册app时github给你的 )-->
+                            <!--  执行回调url的get请求 用到了AuthorizeController去解析路由 -->
                             <a href="https://github.com/login/oauth/authorize?client_id=e203c07480aad4162241&redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录</a>
                         </li>
                     </ul>
@@ -61,28 +66,34 @@
         <!--正文-->
         <div class="container-fluid main">
             <div class="row">
+                <!--   左侧9   -->
                 <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                    <!--  在bootstrap库找标签  -->
                     <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span>发现</h2>
                     <hr>
-
+                    <!--  对model中的questions列表循环输出  -->
                     <div class="media" th:each="question : ${questions}">
                         <div class="media-left">
+                            <!--  头像  -->
                             <a href="#">
                                 <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">
                             </a>
                             <!--<span th:text="${question.user.avatarUrl}"></span>测试能否拿到头像url-->
                         </div>
                         <div class="media-body">
+                            <!--   正文 -->
                             <h4 class="media-heading" th:text="${question.title}"></h4>
                             <span th:text="${question.description}"></span><br>
                             <span class="text-desc">
                                 <span th:text="${question.commentCount}"></span>个回复 ●
                                 <span th:text="${question.viewCount}"></span>浏览 ● 发布时间
+                                <!--  日期格式化  -->
                                 <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
                             </span>
                         </div>
                     </div>
                 </div>
+                <!--   右侧3   -->
                 <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
                     <h3>热门话题</h3>
                 </div>
