@@ -11,6 +11,7 @@ public class GithubUser {
     private String name;
     private Long id;
     private String bio;
-    private String avatar_url;
+    //fastjson可将下划线自动映射驼峰
+    private String avatarUrl;
 
 }

@@ -82,8 +82,11 @@
                         <div class="container-fluid main">
                             <div class="row">
                                 <!-- 回显的错误提示 -->
-                                <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 alert alert-danger"
-                                     th:text="${error}" th:if="${error!= null}">
+                                <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 ">
+                                    <div class="alert alert-danger col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                         th:text="${error}"
+                                         th:if="${error!= null}">
+                                    </div>
                                 </div>
                                 <!-- 注意将按钮类型改为submit用于提交表单 -->
                                 <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">

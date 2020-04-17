@@ -63,7 +63,7 @@ public class AuthorizeController {
             //获取时间
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
-            user.setAvatarUrl(githubUser.getAvatar_url());
+            user.setAvatarUrl(githubUser.getAvatarUrl());
             //所有属性都填写完毕
             //插入数据库
             userMapper.insert(user);
