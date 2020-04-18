@@ -1,5 +1,6 @@
 package com.swd.community.service;
 
+import com.swd.community.dto.PaginationDTO;
 import com.swd.community.dto.QuestionDTO;
 import com.swd.community.mapper.QuestionMapper;
 import com.swd.community.mapper.UserMapper;
@@ -22,10 +23,30 @@ public class QuestionService {
     @Autowired
     private UserMapper userMapper;
 
-    public List<QuestionDTO> list() {
+    public PaginationDTO list(Integer page, Integer size) {
+
+        PaginationDTO paginationDTO = new PaginationDTO();
+        Integer totalCount = questionMapper.count();
+        paginationDTO.setPagination(totalCount,page,size);
+        if(page<1)
+        {
+            page=1;
+        }
+        if(page > paginationDTO.getTotalPage())
+        {
+            page = paginationDTO.getTotalPage();
+        }
+        //1 5 0 5
+        //2 5 5 5
+        //3 5 10 5
+        //(page-1)*size
+        Integer offset = size * (page - 1);
+
+
         //所有问题都查出来
-        List<Question> list = questionMapper.list();
+        List<Question> list = questionMapper.list(offset,size);
         List<QuestionDTO> questionDTOList=new ArrayList<>();
+
         for (Question question : list) {
             //对每个问题循环查找用户
             User user=userMapper.findById(question.getCreator());
@@ -38,6 +59,10 @@ public class QuestionService {
             questionDTOList.add(questionDTO);
         }
         //返回给indexController
-        return questionDTOList;
+
+        paginationDTO.setQuestions(questionDTOList);
+        paginationDTO.setPage(page);
+
+        return paginationDTO;
     }
 }

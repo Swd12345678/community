@@ -1,5 +1,6 @@
 package com.swd.community.controller;
 
+import com.swd.community.dto.PaginationDTO;
 import com.swd.community.dto.QuestionDTO;
 import com.swd.community.mapper.QuestionMapper;
 import com.swd.community.mapper.UserMapper;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +31,9 @@ public class IndexController {
     //接收get请求
     @GetMapping("/")
     public String index(HttpServletRequest request,
-                        Model model)
+                        Model model,
+                        @RequestParam(name="page",defaultValue = "1")Integer page,
+                        @RequestParam(name="size",defaultValue = "5")Integer size)
     {
         //先把cookie拿到是个数组
         Cookie[] cookies = request.getCookies();
@@ -53,8 +57,8 @@ public class IndexController {
         }
         //不管用户登录与否都要展示数据库中的question表中的信息，用questionService.list();去两个mapper查然后返回一个list
         //将list装进model便于前端循环展示。
-        List<QuestionDTO> questionList=questionService.list();
-        model.addAttribute("questions",questionList);
+        PaginationDTO pagination=questionService.list(page,size);
+        model.addAttribute("pagination",pagination);
         //以上操作都是发生在用户在浏览器输入网址主页按下回车，到浏览器加载出网址主页的过程中，属于一个get请求
         return "index";
     }
