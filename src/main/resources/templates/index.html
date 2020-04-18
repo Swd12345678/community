@@ -7,61 +7,13 @@
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <!--引入自己写的.css文件后面加上版本号这样可以每次运行时将css缓存清空防止出现修改后无效果-->
         <link rel="stylesheet" href="css/community.css?version=1.0.7"/>
-        <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+        <script src="js/jquery-3.5.0.min.js" type="application/javascript"></script>
         <script src="js/bootstrap.min.js" type="application/javascript"></script>
     </head>
     <body>
         <!--<p th:text="'Hello, ' + ${name} + '!'"/>-->
         <!--头部-->
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">白菜社区</span>
-                    </button>
-                    <!--  点击标题返回主页面 将按钮的href设为根目录  -->
-                    <a class="navbar-brand" href="/">白菜社区</a>
-                </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <!-- 搜索问题表单  -->
-                    <form class="navbar-form navbar-left">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="搜索问题">
-                        </div>
-                        <button type="submit" class="btn btn-default">搜索</button>
-                    </form>
-                    <!-- 右上角选项  -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!--  未登录，不能发布 -->
-                        <li th:if="${session.user!=null}">
-                            <a href="/publish">
-                                发布
-                            </a>
-                        </li>
-                        <!--<div th:text="${session.githubUser}"></div>  单纯的在div打印-->
-                        <!--  未登录，不显示用户名及下拉列表 -->
-                        <li class="dropdown" th:if="${session.user != null}">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false" th:text="${session.user.getName()}"> <span
-                                    class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">消息中心</a></li>
-                                <li><a href="#">个人资料</a></li>
-                                <li><a href="#">退出登录</a></li>
-                            </ul>
-                        </li>
-                        <!--  unless -->
-                        <li th:unless="${session.user != null}">
-                            <!--  按下登录按钮访问github的authorize接口  github处理后携带一个code回调redirect_uri  -->
-                            <!-- 回调的redirect_uri :http://localhost:8887/callback (跟client_id一样是你注册app时github给你的 )-->
-                            <!--  执行回调url的get请求 用到了AuthorizeController去解析路由 -->
-                            <a href="https://github.com/login/oauth/authorize?client_id=e203c07480aad4162241&redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录</a>
-                        </li>
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav>
+        <div th:insert="navigation :: nav"></div>
         <!--头部结束-->
         <!--正文-->
         <div class="container-fluid main">
