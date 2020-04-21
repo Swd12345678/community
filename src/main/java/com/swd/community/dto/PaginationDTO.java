@@ -22,33 +22,24 @@ public class PaginationDTO {
     private List<Integer> pages = new ArrayList<>();
     private Integer totalPage;
 
-    public void setPagination(Integer totalCount, Integer page, Integer size) {
+    public void setPagination(Integer totalPage, Integer page) {
 
-        if(totalCount % size == 0){
-            totalPage = totalCount / size;
-        }else {
-            totalPage=totalCount / size +1 ;
-        }
-
-        if(page<1)
-        {
-            page=1;
-        }
-        if(page>totalPage)
-        {
-            page=totalPage;
-        }
+        this.totalPage=totalPage;
         this.page=page;
+        //将当前page放进pages列表
+        //然后以当前page左右各加3页
+        //所以下面的循环只循环3次
         pages.add(page);
         for(int i=1;i<=3;i++) {
             if(page - i >0 ){
+                //头插
                 pages.add(0,page -i);
             }
             if(page + i <= totalPage){
+                //尾插
                 pages.add(page+i );
             }
         }
-
         //是否展示上一页
         if(page == 1)
         {
@@ -76,5 +67,4 @@ public class PaginationDTO {
             showEndPage=true;
         }
     }
-
 }
