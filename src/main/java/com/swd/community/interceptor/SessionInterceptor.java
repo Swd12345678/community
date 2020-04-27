@@ -2,6 +2,7 @@ package com.swd.community.interceptor;
 
 import com.swd.community.mapper.UserMapper;
 import com.swd.community.model.User;
+import com.swd.community.model.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Created by myth on 2020/4/21 9:33
@@ -31,11 +33,14 @@ public class SessionInterceptor implements HandlerInterceptor {
                 {
                     String token=cookie.getValue();
                     //拿此名为token的cookie到数据库中找是否有这么个用户，即该用户是否登录
-                    User user= userMapper.findByToken(token);
-                    if(user!=null)
-                    {
+                    UserExample userExample = new UserExample();
+                    userExample.createCriteria()
+                            .andTokenEqualTo(token);
+                    List<User> users = userMapper.selectByExample(userExample);
+                    //User user= userMapper.findByToken(token);
+                    if(users.size()!=0) {
                         //用户已经登录了，将user对象放进session便于获取用户用户信息，以及维持登录态。
-                        request.getSession().setAttribute("user",user);
+                        request.getSession().setAttribute("user",users.get(0));
                     }
                     break;
                 }
